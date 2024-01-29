@@ -1,0 +1,463 @@
+CREATE TABLE branch35
+(
+branch_name varchar(25)NOT NULL,
+branch_city varchar(20)NOT NULL,
+assets int NOT NULL,
+CONSTRAINT branck35_pk PRIMARY KEY(branch_name)
+);
+
+
+INSERT into branch35 (branch_name,branch_city,assets)
+ values
+ ('dabholi','surat',600000);
+INSERT into branch35 (branch_name,branch_city,assets)
+ values
+ ('VIP','surat',1200000);
+INSERT into branch35 (branch_name,branch_city,assets)
+ values
+ ('malad','mumbai',1800000);
+INSERT into branch35 (branch_name,branch_city,assets)
+ values
+ ('BKC','mumbai',6000000);
+INSERT into branch35 (branch_name,branch_city,assets)
+ values
+ ('sarkhej','ahemdabad',380000);	
+
+
+select * from branch35;
+
+DROP TABLE branch;
+
+------------------------------------------------------------------------------------
+
+CREATE TABLE cust35
+(
+cust_name varchar(25)NOT NULL,
+cust_city varchar(20)NOT NULL,
+cust_street varchar(25)NOT NULL,
+CONSTRAINT cust35_pk PRIMARY KEY(cust_name)
+);
+
+
+INSERT into cust35(cust_name,cust_city,cust_street)
+values
+('swayam','ahemdabad','vedroad');
+INSERT into cust35(cust_name,cust_city,cust_street)
+values
+('samarth','surat','rander');
+INSERT into cust35(cust_name,cust_city,cust_street)
+values
+('dhruv','surat','raheja');
+INSERT into cust35(cust_name,cust_city,cust_street)
+values
+('Dhruv','mumbai','parle');
+INSERT into cust35(cust_name,cust_city,cust_street)
+values
+('sujal','ahemdabad','SG HIGH');
+
+select * from cust35;
+
+------------------------------------------------------------------------------------
+
+
+CREATE TABLE account35
+(
+acc_no int NOT NULL,
+balance int NOT NULL,
+branch_name varchar(25)NOT NULL REFERENCES branch35(branch_name),
+CONSTRAINT acc35_pk PRIMARY KEY(acc_no)
+);
+
+
+INSERT into account35(acc_no,balance,branch_name)
+values
+(101,45000,'dabholi');
+INSERT into account35(acc_no,balance,branch_name)
+values
+(102,75000,'VIP');
+INSERT into account35(acc_no,balance,branch_name)
+values
+(103,29000,'malad');
+INSERT into account35(acc_no,balance,branch_name)
+values
+(104,41000,'BKC');
+INSERT into account35(acc_no,balance,branch_name)
+values
+(105,19000,'sarkhej');
+
+
+select * from account35;
+
+------------------------------------------------------------------------------------
+
+CREATE TABLE loan35
+(
+loan_no int NOT NULL,
+amount int NOT NULL,
+branch_name varchar(25)NOT NULL REFERENCES branch35(branch_name),
+CONSTRAINT loan35_pk PRIMARY KEY(loan_no)
+);
+
+
+INSERT into loan35(loan_no,amount,branch_name)
+values
+(201,5500,'dabholi');
+INSERT into loan35(loan_no,amount,branch_name)
+values
+(202,4500,'VIP');
+INSERT into loan35(loan_no,amount,branch_name)
+values
+(203,2000,'malad');
+INSERT into loan35(loan_no,amount,branch_name)
+values
+(204,5000,'BKC');
+INSERT into loan35(loan_no,amount,branch_name)
+values
+(205,15000,'sarkhej');
+
+
+select * from loan35;
+
+
+------------------------------------------------------------------------------------
+
+
+CREATE TABLE depositer35
+(
+acc_no int NOT NULL REFERENCES account35(acc_no),
+cust_name varchar(25)NOT NULL REFERENCES cust35(cust_name)
+);
+
+
+INSERT into depositer35(acc_no,cust_name)
+values
+(101,'swayam');
+INSERT into depositer35(acc_no,cust_name)
+values
+(102,'samarth');
+INSERT into depositer35(acc_no,cust_name)
+values
+(103,'dhruv');
+INSERT into depositer35(acc_no,cust_name)
+values
+(104,'Dhruv');
+INSERT into depositer35(acc_no,cust_name)
+values
+(105,'sujal');
+
+
+select * from depositer35;
+
+
+------------------------------------------------------------------------------------
+
+
+CREATE TABLE borrower35
+(
+loan_no int NOT NULL REFERENCES loan35(loan_no),
+cust_name varchar(25)NOT NULL REFERENCES cust35(cust_name)
+);
+
+
+INSERT into borrower35(loan_no,cust_name)
+values
+(201,'swayam');
+INSERT into borrower35(loan_no,cust_name)
+values
+(202,'samarth');
+INSERT into borrower35(loan_no,cust_name)
+values
+(203,'dhruv');
+INSERT into borrower35(loan_no,cust_name)
+values
+(204,'Dhruv');
+INSERT into borrower35(loan_no,cust_name)
+values
+(205,'sujal');
+
+
+select * from borrower35;
+
+
+------------------------------------------------------------------------------------
+
+SELECT * FROM branch35;
+SELECT * FROM cust35;
+SELECT * FROM account35;
+SELECT * FROM loan35;
+SELECT * FROM depositer35;
+SELECT * FROM borrower35;
+
+
+create table student345
+(
+	stu_name varchar(20) NOT NULL,
+	age int NOT NULL,
+	gender varchar(20) NOT NULL,
+	roll_no int NOT NULL,
+	CONSTRAINT chk_age CHECK(age>=10),
+	CONSTRAINT chk_gender CHECK (gender in('male','femlae','other'))
+);
+
+insert into student000
+(stu_name,age,roll_no)
+values
+('swayam',9,43);
+
+
+7. Find accounts having balance less than or equal to 50000(<=50000).
+
+SELECT acc_no
+  FROM account35
+  WHERE balance<=50000;
+
+
+8. Find account details where branch name is sarkehj and balance is 20000.
+
+SELECT *
+  FROM account35
+  WHERE branch_name='sarkhej' AND balance=20000;
+
+8(A). Find account details where branch name is NOT sarkhej and balance is 50000
+
+SELECT *
+  FROM account35
+  WHERE branch_name NOT IN('sarkhej') AND balance=50000;
+
+OR
+
+SELECT *
+  FROM account35
+  WHERE branch_name!='sarkhej' AND balance=50000;
+
+9.Find name of customer living in vedroad.
+
+SELECT *
+  FROM cust35
+  WHERE cust_street='vedroad';
+
+10.Find all customers having 'dro' word in their street name. 
+
+SELECT *
+  FROM cust35
+  WHERE cust_street LIKE '%dro%';
+
+11.Find all loans which are issued from sarkhej branch and is more than 30000.
+
+SELECT *
+FROM loan35
+WHERE branch_name='sarkhej' AND amount>30000;
+
+14. Find all acounts details are located in Ahemdabad city.
+
+SELECT branch_name,acc_no,balance,branch_city
+FROM branch35 NATURAL JOIN account35
+WHERE branch_city='ahemdabad';
+
+15. Find name of customers having acounts in VIP branch.
+
+SELECT *
+FROM account35 NATURAL JOIN depositer35
+WHERE branch_name='VIP';
+
+
+16.Find loan number and amount of loan which are from branches located in ahemdabad.
+
+SELECT loan_no,amount,branch_name,branch_city
+FROM loan35 NATURAL JOIN branch35
+WHERE branch.branch_city='ahemdabad';
+
+
+17.Find customers having loan amount less than 10000.
+
+SELECT loan_no,amount,branch_name,cust_name
+FROM loan35 NATURAL JOIN borrower35
+WHERE amount<10000;
+
+18.Find customers names having account balance greater than 30000.
+
+SELECT acc_no,cust_name,balance
+FROM account35 NATURAL JOIN depositer35
+WHERE balance>30000;
+
+19.Find customer cities having balance greater than 30000.
+
+SELECT acc_no,balance,cust_city
+FROM account35 NATURAL JOIN depositer35 NATURAL JOIN cust35
+WHERE balance>30000;
+
+20.Find customers names having account balance greater than 10000 from branch located in ahemdabad.
+
+SELECT acc_no,cust_name,balance,branch_city
+FROM account35 NATURAL JOIN depositer35 NATURAL JOIN branch35
+WHERE branch_city='ahemdabad'
+AND balance>10000;
+
+
+ ALTER table account35
+    ADD CONSTRAINT CHK_balance CHECK(balance>100);
+
+ ALTER table branch35
+    ADD CONSTRAINT CHK_assets CHECK(assests>10000);
+
+
+
+ ALTER table cust35
+   ADD dateofbirth date;
+
+  ALTER table branch35
+   ADD opening date;
+
+ insert into cust35
+    (cust_name,cust_city,cust_street,dateofbirth,gender)
+    values
+    ('natasha','surat','surat','3-dec-2006','female');
+
+ INSERT into branch35 (branch_name,branch_city,assests,opening)
+ values
+ ('bopal','sanand',450000,'23-apr-2020');
+
+ INSERT into branch35 (branch_name,branch_city,assests,opening)
+ values
+ ('viramgham','sanand',450000,'23-jun-2021');
+
+ ALTER table cust35
+ ADD gender varchar(45);
+
+ ALTER table cust35
+    ADD CONSTRAINT CHK_gender CHECK(gender in('male','female','unknown'));
+
+
+ select cust_name
+    from cust35
+    where dateofbirth>='1-jan-2000' AND dateofbirth<='30-feb-2006';
+
+  
+
+21. find name of customer whose birthday falls between january to march.
+
+22. find customer nmae whose birthday falls between january 2001 to january 2010.
+
+select cust_name 
+from cust35
+where dateofbirth>'1-jan-2001'
+and dateofbirth<'1-jan-2010';
+
+23. find details of account opened between 2020 nto 2023.
+
+select * 
+from account35
+where opening>'1-jan-2020'
+and opening<'31-dec-2023';
+
+24. update name of customer to default whose account balance is less than 5000.
+
+update cust35
+    SET cust_name ='defaulT'
+    where balance>20000;
+
+25. update balance of account to 0 whose account balance is less than 5000.
+
+update account35
+set balance=0
+where balance>50000;
+
+25. update assets value to 5 lack where branch name has 'pur' or 'ro' in the name.
+
+update branch35
+SET assests=500000
+where branch_name like '%a%' and branch_name like '%r%';
+
+26. update loan amount value after deducting 5% of loan amount.
+
+update loan35
+SET amount=amount-(0.05*amount);
+
+27. increase account balance by 5%.
+
+update account35
+set balance=balance+(0.05*balance);
+
+28.  Find the account balance, account number and names of customers whose 
+accounts are in the city with name like 'ahm' or 'rod'.
+
+
+select balance,acc_no,cust_name
+from branch35 NATURAL JOIN account35 NATURAL JOIN depositer35
+where branch_city like '%mb%' or branch_city like '%ahe%';
+
+29.  Find the borrower details who have taken loans from branch whose name 
+contains 5 characters and 'r' as the third character of the branch name.
+
+select *
+from NATURAL JOIN loan35 NATURAL JOIN borrower35
+where branch_name like '__l__';
+
+30. find all cutomer name having an account or loan or both.
+
+select cust_name 
+from depositer35 
+UNION ALL
+select cust_name 
+from borrower35;
+
+select cust_name 
+from depositer35 
+INTERSECT
+select cust_name 
+from borrower35;
+
+31. find all customer having an acccount but not loan.
+
+select cust_name
+from depositer35
+minus
+select cust_name
+from borrower35;
+
+32. find all the name and account number where balance is greater than 400 and less than 4000.
+
+select branch_name,acc_no
+from branch35 NATURAL JOIN account35
+where balance between 400 and 100000;
+
+33. Find all the loan numbers along with loan amount if the loan is from branch situated in ahmedabad.
+
+select loan_no,amount
+from loan35 NATURAL JOIN branch35
+where branch_city ='ahemdabad';
+
+34.  Find all the details of the bank branches.
+
+select * from branch35;
+
+35. Find the name of all customers having bank account.
+
+select cust_name
+from cust35;
+
+36. Find each loan number along with amount.
+
+select * from loan35;
+
+37. Find all account number and balance adding 6% yearly interest.
+
+select acc_no,balance
+from account35
+where balance=balance+(0.06*balance);
+
+38.  Find all account number where balance is less than 3000.
+
+select acc_no
+from account35
+where balance<100000;
+
+39. Find branch name which is situated in ahmedabad and having assets less than 450000.
+
+select branch_name
+from branch35
+where branch_city='ahemdabad' and assets<500000;
+
+
+
+

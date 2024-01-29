@@ -1,0 +1,88 @@
+create table student
+(
+	rollno int NOT NULL,
+	name varchar(20),
+	class varchar(20),
+	dob date,
+	CONSTRAINT rollno PRIMARY KEY(rollno)
+);
+
+insert into student
+(rollno,name,class,dob)
+values
+(1,'swayam','12','4-jun-1980');
+insert into student
+(rollno,name,class,dob)
+values
+(2,'samarth','12','14-aug-1982');
+insert into student
+(rollno,name,class,dob)
+values
+(3,'abhi','12','12-dec-1980');
+
+
+create table course
+(
+	courseno int,
+	coursename varchar(20),
+	max_marks int,
+	pass_marks int,
+	CONSTRAINT courseno PRIMARY KEY(courseno )
+);
+
+insert into course
+(courseno,coursename,max_marks,pass_marks)
+values
+(101,'dbms',100,33);
+insert into course
+(courseno,coursename,max_marks,pass_marks)
+values
+(102,'cn',100,33);
+insert into course
+(courseno,coursename,max_marks,pass_marks)
+values
+(103,'cs',100,33);
+
+create table sc
+(
+	rollno  REFERENCES student(rollno),
+	courseno  REFERENCES course(courseno),
+	marks int
+);
+
+insert into sc
+(rollno,courseno,marks)
+values
+(1,101,80);
+insert into sc
+(rollno,courseno,marks)
+values
+(2,102,70);
+insert into sc
+(rollno,courseno,marks)
+values
+(3,103,67);
+
+1. Add a constraint that the marks entered should strictly be between 0 and 100.
+
+ALTER table sc
+    ADD CONSTRAINT CHK_marks CHECK(marks>=0 and marks<=100);
+
+2. While creating SC table, composite key constraint was forgotten. Add the composite key now.
+
+
+3. Display details of student who takes ‘Database Management System’ course.
+
+select *
+from student NATURAL JOIN course
+where coursename='dbms';
+
+4. Display the names of students who have scored more than 70% in Computer Networks and have not failed in any subject.
+
+select name 
+from student NATURAL JOIN sc NATURAL JOIN course
+where marks>=70 and coursename='cn';
+
+5. Display the average marks obtained by each student.
+
+select 

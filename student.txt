@@ -1,0 +1,128 @@
+create table student35
+(
+	student_id int,
+	last_name varchar(20),
+	first_name varchar(20),
+	address varchar(50),
+	dob date,
+	city varchar(20),
+	state varchar(20),
+	zipcode int,
+	telephone int,
+	email varchar(30),
+	CONSTRAINT student35 PRIMARY KEY(student_id)
+);
+
+create table class35
+(
+	class_build varchar(20),
+	class_id int,
+	class_room int,
+	semester int,
+	school_year int,
+	CONSTRAINT class35 PRIMARY KEY(class_id)
+);
+
+create table student_grade35
+(
+	grade varchar(10),
+	student_id int NOT NULL REFERENCES student35(student_id),
+	class_id int NOT NULL REFERENCES class35(class_id),
+	date_grade_assigned date,
+	CONSTRAINT CHK_grade CHECK(grade in('A','A+','A-','B','B+','B-','C','C+','C-','D','D+','D-','F','F+','F-'))
+);
+
+ ALTER table student35
+   ADD dob date;
+
+
+insert into student35
+(student_id,last_name,first_name,address,dob,city,state,zipcode,telephone,email)
+values
+(101,'shah','abir','near lj clg','12-mar-2000','ahemdabad','gujarat',382110,1234567890,'xvy@gmail.com');
+insert into student35
+(student_id,last_name,first_name,address,dob,city,state,zipcode,telephone,email)
+values
+(102,'patel','ram','near lj clg','5-apr-2005','bhavnagar','bihar',382110,1234567890,'abc@gmail.com');
+insert into student35
+(student_id,last_name,first_name,address,dob,city,state,zipcode,telephone,email)
+values
+(103,'rao','dhruv','oppsite croma','28-dec-2004','ahemdabad','gujarat',382110,1234567890,'asd@gmail.com');
+
+
+insert into class35
+(class_build,class_id,class_room,semester,school_year)
+values
+('mca',201,307,2,4);
+insert into class35
+(class_build,class_id,class_room,semester,school_year)
+values
+('mca',202,307,2,4);
+insert into class35
+(class_build,class_id,class_room,semester,school_year)
+values
+('mca',203,307,2,4);
+
+insert into student_grade35
+(grade,student_id,class_id,date_grade_assigned)
+values
+('A+',101,201,'23-jun-2006');
+insert into student_grade35
+(grade,student_id,class_id,date_grade_assigned)
+values
+('A',102,202,'3-oct-2007');
+insert into student_grade35
+(grade,student_id,class_id,date_grade_assigned)
+values
+('B+',103,203,'17-aug-2006');
+
+
+select * from student35;
+select * from class35;
+select * from student_grade35;
+
+1. update the city of the student to bhavnagar whose name starts wiht 'A' ans end with 'r'.
+
+update student35
+set city='bhavnagar'
+where first_name='abir';
+
+2. display the detail of student whose last name is patel and dob year is greater then 90.
+
+select *
+from student35
+where last_name='patel'
+and dob>'01-jan-1990';
+
+3. display the detail of student who has secured A+ or B+ grae.
+
+select *
+from student_grade35 NATURAL JOIN student35
+where grade='A+' or grade='B+';
+
+4. display the class building of student who are the residents of gujarat state.
+
+select class_build 
+from  student35 NATURAK JOIN student_grade35  NATURAK JOIN class35
+where state='gujarat';
+
+5. find the grade,date_grade_assigned,and email of student who are either living in ahemdabad or state bihae.
+
+select grade,date_grade_assigned,email 
+from student35 NATURAL JOIN student_grade35
+where city='ahemdabad' or state='bihar';
+
+6. find the total of student who have scored A+ in year 2022.
+
+select first_name
+from student35 NATURAL JOIN student_grade35
+where grade='A+' and date_grade_assigned between '01-jan-2006' and '01-dec-2006' ;
+
+
+7. add field gender in student and the value must be either 'male' if'female' or 'other'.
+
+ALTER table student35
+ ADD gender varchar(45);
+
+ ALTER table student35
+    ADD CONSTRAINT CHK_gender CHECK(gender in('male','female','unknown'));
